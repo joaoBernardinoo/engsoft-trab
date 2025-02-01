@@ -1,10 +1,10 @@
 from singleton.biblioteca import LibrarySystem
-from command.commands import EmprestimoCommand, ListarUsuariosCommand, ListarLivrosCommand, ConsultaExemplaresLivroCommand
 from command.carregador_parametros import CarregadorParametros
+from command.interface_usuario import InterfaceUsuario
 
 def main():
     library_system = LibrarySystem.get_instance()
-    # ...código existente...
+    interface_usuario = InterfaceUsuario()
     print("Comandos disponíveis:")
     print("emp [user_id] [book_id] - Empréstimo de livro")
     print("dev [user_id] [book_id] - Devolução de livro")
@@ -21,21 +21,9 @@ def main():
         if command == "sair":
             break
         parts = command.split()
-        if parts[0] == "emp" and len(parts) == 3:
-            user_id = parts[1]
-            book_id = parts[2]
-            carregador_parametros = CarregadorParametros(user_id, book_id)
-            EmprestimoCommand().execute(carregador_parametros)
-        elif parts[0] == "lus":
-            ListarUsuariosCommand().execute()
-        elif parts[0] == "llv":
-            ListarLivrosCommand().execute()
-        elif parts[0] == "liv" and len(parts) == 2:
-            book_id = parts[1]
-            carregador_parametros = CarregadorParametros(book_id)
-            ConsultaExemplaresLivroCommand().execute(carregador_parametros)
-        # Processar outros comandos
-        # ...código existente...
+        str_comando = parts[0]
+        parametros = CarregadorParametros(parts[1:])
+        interface_usuario.executar_comando(str_comando, parametros)
 
 if __name__ == "__main__":
     main()

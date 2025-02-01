@@ -8,8 +8,8 @@ class Command:
 class EmprestimoCommand(Command):
     def execute(self, carregador_parametros):
         library_system = LibrarySystem.get_instance()
-        user_id = int(carregador_parametros.get_parametro_um())
-        book_id = int(carregador_parametros.get_parametro_dois())
+        user_id = int(carregador_parametros.get_parametro(0))
+        book_id = int(carregador_parametros.get_parametro(1))
         
         user = next((u for u in library_system.users if u.user_id == user_id), None)
         book = next((b for b in library_system.books if b.book_id == book_id), None)
@@ -30,6 +30,29 @@ class EmprestimoCommand(Command):
                     print(f"Não há exemplares disponíveis para o livro {book.title}")
             else:
                 print(f"Empréstimo não permitido para {user.name} - {book.title}")
+        else:
+            print("Usuário ou livro não encontrado.")
+
+class DevolucaoCommand(Command):
+    def execute(self, carregador_parametros):
+        library_system = LibrarySystem.get_instance()
+        user_id = int(carregador_parametros.get_parametro(0))
+        book_id = int(carregador_parametros.get_parametro(1))
+        
+        user = next((u for u in library_system.users if u.user_id == user_id), None)
+        book = next((b for b in library_system.books if b.book_id == book_id), None)
+        
+        if user and book:
+            exemplar = next((e for e in book.exemplars if e.loaned_to == user), None)
+            if exemplar:
+                exemplar.status = "Disponível"
+                exemplar.loaned_to = None
+                exemplar.loan_date = None
+                exemplar.return_date = None
+                user.loans.remove(exemplar)
+                print(f"Devolução realizada com sucesso para {user.name} - {book.title}")
+            else:
+                print(f"Não há empréstimo em aberto para o livro {book.title} e o usuário {user.name}")
         else:
             print("Usuário ou livro não encontrado.")
 
@@ -56,7 +79,7 @@ class ListarLivrosCommand(Command):
 class ConsultaExemplaresLivroCommand(Command):
     def execute(self,carregador_parametros):
         library_system = LibrarySystem.get_instance()
-        book_id = int(carregador_parametros.get_parametro_um())
+        book_id = int(carregador_parametros.get_parametro(0))
         book = next((b for b in library_system.books if b.book_id == book_id), None)
         if not book:
             print("Livro não encontrado.")
@@ -70,16 +93,6 @@ class ConsultaExemplaresLivroCommand(Command):
                 print(f"Exemplar ID: {exemplar.exemplar_id} - Emprestado para {exemplar.loaned_to.name}")
             elif status == "Reservado":
                 print(f"Exemplar ID: {exemplar.exemplar_id} - Reservado por {exemplar.reserved_by.name}")
-
-class DevolucaoCommand(Command):
-    def __init__(self, user_id, book_id):
-        self.user_id = user_id
-        self.book_id = book_id
-
-    def execute(self):
-        # Implementar lógica de devolução aqui
-        # ...código existente...
-        pass
 
 class ReservaCommand(Command):
     def __init__(self, user_id, book_id):
