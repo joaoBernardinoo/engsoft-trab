@@ -44,6 +44,6 @@ class LibrarySystem:
             book_id, title, publisher, authors, edition, year, exemplars_count = book_data
             book = Book(book_id, title, publisher, authors, edition, year)
             for _ in range(exemplars_count):
-                book.exemplars.append(Exemplar(book_id, exemplar_id_counter, "Disponível"))
+                book.add_exemplar(Exemplar(book_id, exemplar_id_counter, "Disponível"))
                 exemplar_id_counter += 1
             self.books.append(book)

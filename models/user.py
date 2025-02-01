@@ -44,6 +44,15 @@ class User:
     def increment_notifications(self):
         self._notifications += 1
 
+    def is_devedor(self):
+        return any(loan.is_overdue() for loan in self._loans)
+
+    def livros_emprestados_count(self):
+        return len(self._loans)
+
+    def has_emprestimo(self, book):
+        return any(loan.book_id == book.book_id for loan in self._loans)
+
     def get_emprestimo_strategy(self):
         strategies = {
             "Aluno Graduação": EmprestimoAlunoGraduacaoStrategy,
