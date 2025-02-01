@@ -34,6 +34,27 @@ class EmprestimoCommand(Command):
         else:
             print("Usuário ou livro não encontrado.")
 
+class ListarUsuariosCommand(Command):
+    def execute(self, carregador_parametros=None):
+        library_system = LibrarySystem.get_instance()
+        if not library_system.users:
+            print("Nenhum usuário cadastrado.")
+            return
+        print("Usuários cadastrados:")
+        for user in library_system.users:
+            print(f"ID: {user.user_id}, Nome: {user.name}, Tipo: {user.user_type}")
+
+
+class ListarLivrosCommand(Command):
+    def execute(self, carregador_parametros=None):
+        library_system = LibrarySystem.get_instance()
+        if not library_system.books:
+            print("Nenhum livro cadastrado.")
+            return
+        print("Livros disponíveis:")
+        for book in library_system.books:
+            print(f"ID: {book.book_id}, Título: {book.title}, Autor(es): {book.authors}, Editora: {book.publisher}, Ano: {book.year}")
+
 class DevolucaoCommand(Command):
     def __init__(self, user_id, book_id):
         self.user_id = user_id
