@@ -1,4 +1,6 @@
 from singleton import LibrarySystem
+from commands import EmprestimoCommand
+from carregador_parametros import CarregadorParametros
 
 def main():
     library_system = LibrarySystem.get_instance()
@@ -16,8 +18,14 @@ def main():
         command = input("Digite o comando: ")
         if command == "sair":
             break
+        parts = command.split()
+        if parts[0] == "emp" and len(parts) == 3:
+            user_id = parts[1]
+            book_id = parts[2]
+            carregador_parametros = CarregadorParametros(user_id, book_id)
+            EmprestimoCommand().execute(carregador_parametros)
         # Processar outros comandos
         # ...código existente...
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     main()
