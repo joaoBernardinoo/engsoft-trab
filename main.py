@@ -1,5 +1,5 @@
 from singleton.biblioteca import LibrarySystem
-from command.commands import EmprestimoCommand, ListarUsuariosCommand, ListarLivrosCommand
+from command.commands import EmprestimoCommand, ListarUsuariosCommand, ListarLivrosCommand, ConsultaExemplaresLivroCommand
 from command.carregador_parametros import CarregadorParametros
 
 def main():
@@ -15,13 +15,11 @@ def main():
     print("ntf [user_id] - Consulta de notificações recebidas")
     print("lus - Listar todos os usuários cadastrados")
     print("llv - Listar todos os livros disponíveis")
-
     print("sair - Sair do sistema")
     while True:
         command = input("Digite o comando: ")
         if command == "sair":
             break
-        # emp 123 100
         parts = command.split()
         if parts[0] == "emp" and len(parts) == 3:
             user_id = parts[1]
@@ -32,6 +30,9 @@ def main():
             ListarUsuariosCommand().execute()
         elif parts[0] == "llv":
             ListarLivrosCommand().execute()
+        elif parts[0] == "liv" and len(parts) == 2:
+            book_id = parts[1]
+            ConsultaExemplaresLivroCommand(book_id).execute()
         # Processar outros comandos
         # ...código existente...
 
