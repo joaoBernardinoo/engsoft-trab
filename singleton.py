@@ -16,7 +16,6 @@ class LibrarySystem:
             LibrarySystem._instance = self
             self.users = []
             self.books = []
-            # Inicializar dados de teste
             self._initialize_test_data()
 
     def _initialize_test_data(self):
