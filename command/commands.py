@@ -95,14 +95,39 @@ class ConsultaExemplaresLivroCommand(Command):
                 print(f"Exemplar ID: {exemplar.exemplar_id} - Reservado por {exemplar.reserved_by.name}")
 
 class ReservaCommand(Command):
-    def __init__(self, user_id, book_id):
-        self.user_id = user_id
-        self.book_id = book_id
+    def execute(self, carregador_parametros):
+        library_system = LibrarySystem.get_instance()
+        user_id = int(carregador_parametros.get_parametro(0))
+        book_id = int(carregador_parametros.get_parametro(1))
+        
+        user = next((u for u in library_system.users if u.user_id == user_id), None)
+        book = next((b for b in library_system.books if b.book_id == book_id), None)
+        
+        if user and book:
+            exemplar = next((e for e in book.exemplars if e.status == "Disponível"), None)
+            
+            if not exemplar:
+                print(f"Não há exemplares disponíveis para o livro {book.title}")
 
-    def execute(self):
-        # Implementar lógica de reserva aqui
-        # ...código existente...
-        pass
+            if len(user.reservations) >= 3:
+                print(f"Reserva não permitida para {user.name} - Limite de reservas atingido")
+                return
+
+            if not any(reservation.user_id == user.user_id for reservation in book.reservations):
+                print(f"Reserva não permitida para {user.name} - Usuário já possui reserva para o livro {book.title}")
+                return
+            
+            if len(book.reservations) >= len(book.exemplars):
+                    print(f"Reserva não permitida para {user.name} - Todas as reservas estão preenchidas")
+                    return
+
+            book.add_reservation(user_id)
+            user.add_reservation(book_id)
+            
+            print(f"Reserva realizada com sucesso para {user.name} - {book.title}")
+            
+        else:
+            print("Usuário ou livro não encontrado.")
 
 class ObservacaoCommand(Command):
     def __init__(self, user_id, book_id):
