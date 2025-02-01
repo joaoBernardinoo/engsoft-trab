@@ -23,9 +23,9 @@ class EmprestimoCommand(Command):
                     exemplar.loaned_to = user
                     exemplar.loan_date = datetime.now()
                     exemplar.return_date = datetime.now() + timedelta(days=strategy.tempo_emprestimo())
-                    user.add_loans(exemplar)
+                    user.add_loan(exemplar)
                     print(f"Empréstimo realizado com sucesso para {user.name} - {book.title}")
-                    print(user.loans)
+                    print([emprestado.exemplar_id for emprestado in user.loans])
                 else:
                     print(f"Não há exemplares disponíveis para o livro {book.title}")
             else:
@@ -54,12 +54,10 @@ class ListarLivrosCommand(Command):
             print(f"ID: {book.book_id}, Título: {book.title}, Autor(es): {book.authors}, Editora: {book.publisher}, Ano: {book.year}")
 
 class ConsultaExemplaresLivroCommand(Command):
-    def __init__(self, book_id):
-        self.book_id = book_id
-
-    def execute(self):
+    def execute(self,carregador_parametros):
         library_system = LibrarySystem.get_instance()
-        book = next((b for b in library_system.books if b.book_id == self.book_id), None)
+        book_id = int(carregador_parametros.get_parametro_um())
+        book = next((b for b in library_system.books if b.book_id == book_id), None)
         if not book:
             print("Livro não encontrado.")
             return

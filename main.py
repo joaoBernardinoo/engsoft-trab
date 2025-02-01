@@ -32,7 +32,8 @@ def main():
             ListarLivrosCommand().execute()
         elif parts[0] == "liv" and len(parts) == 2:
             book_id = parts[1]
-            ConsultaExemplaresLivroCommand(book_id).execute()
+            carregador_parametros = CarregadorParametros(book_id)
+            ConsultaExemplaresLivroCommand().execute(carregador_parametros)
         # Processar outros comandos
         # ...código existente...
 
