@@ -1,5 +1,3 @@
-from strategy.strategies import EmprestimoAlunoGraduacaoStrategy, EmprestimoAlunoPosGraduacaoStrategy, EmprestimoProfessorStrategy
-from models import User, Book, Exemplar
 from singleton.biblioteca import LibrarySystem
 from datetime import datetime, timedelta
 
@@ -25,8 +23,9 @@ class EmprestimoCommand(Command):
                     exemplar.loaned_to = user
                     exemplar.loan_date = datetime.now()
                     exemplar.return_date = datetime.now() + timedelta(days=strategy.tempo_emprestimo())
-                    user.loans.append(exemplar)
+                    user.add_loans(exemplar)
                     print(f"Empréstimo realizado com sucesso para {user.name} - {book.title}")
+                    print(user.loans)
                 else:
                     print(f"Não há exemplares disponíveis para o livro {book.title}")
             else:

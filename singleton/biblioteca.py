@@ -1,4 +1,6 @@
-from models import User, Book
+from models.book import Book
+from models.user import User
+from models.exemplar import Exemplar
 
 class LibrarySystem:
     _instance = None

@@ -13,11 +13,13 @@ def main():
     print("liv [book_id] - Consulta de informações de livro")
     print("usu [user_id] - Consulta de informações de usuário")
     print("ntf [user_id] - Consulta de notificações recebidas")
+
     print("sair - Sair do sistema")
     while True:
         command = input("Digite o comando: ")
         if command == "sair":
             break
+        # emp 123 100
         parts = command.split()
         if parts[0] == "emp" and len(parts) == 3:
             user_id = parts[1]
