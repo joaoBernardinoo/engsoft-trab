@@ -1,3 +1,4 @@
+from strategies import EmprestimoAlunoGraduacaoStrategy, EmprestimoAlunoPosGraduacaoStrategy, EmprestimoProfessorStrategy
 class User:
     def __init__(self, user_id, user_type, name):
         self.user_id = user_id
@@ -7,6 +8,16 @@ class User:
         self.reservations = []
         self.notifications = 0
 
+        if self.user_type == "Aluno Graduação":
+            self.emprestimo = EmprestimoAlunoGraduacaoStrategy()
+        elif self.user_type == "Aluno Pós-Graduação":
+            self.emprestimo = EmprestimoAlunoPosGraduacaoStrategy()
+        elif self.user_type == "Professor":
+            self.emprestimo = EmprestimoProfessorStrategy()
+        else:
+            self.emprestimo = None
+            raise Exception("Tipo de usuário desconhecido.")
+        
 class Book:
     def __init__(self, book_id, title, publisher, authors, edition, year):
         self.book_id = book_id

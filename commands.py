@@ -1,4 +1,3 @@
-from strategies import EmprestimoAlunoGraduacaoStrategy, EmprestimoAlunoPosGraduacaoStrategy, EmprestimoProfessorStrategy
 
 class Command:
     def execute(self):
@@ -15,17 +14,7 @@ class EmprestimoCommand(Command):
         book = next((b for b in library_system.books if b.book_id == self.book_id), None)
         
         if user and book:
-            if user.user_type == "Aluno Graduação":
-                strategy = EmprestimoAlunoGraduacaoStrategy()
-            elif user.user_type == "Aluno Pós-Graduação":
-                strategy = EmprestimoAlunoPosGraduacaoStrategy()
-            elif user.user_type == "Professor":
-                strategy = EmprestimoProfessorStrategy()
-            else:
-                print("Tipo de usuário desconhecido.")
-                return
-
-            if strategy.pode_emprestar(user, book):
+            if user.emprestimo.pode_emprestar(user, book):
                 # Realizar o empréstimo
                 # ...código existente...
                 print(f"Empréstimo realizado com sucesso para {user.name} - {book.title}")
