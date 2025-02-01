@@ -1,5 +1,8 @@
-class Book:
+from observer.observers import Observable
+
+class Book(Observable):
     def __init__(self, book_id, title, publisher, authors, edition, year):
+        super().__init__()
         self._book_id = book_id
         self._title = title
         self._publisher = publisher
@@ -43,9 +46,11 @@ class Book:
 
     def add_exemplar(self, exemplar):
         self._exemplars.append(exemplar)
+        self.notify_observers()  # Notificar observadores sobre a adição de um novo exemplar
 
     def add_reservation(self, reservation):
         self._reservations.append(reservation)
+        self.notify_observers()  # Notificar observadores sobre a adição de uma nova reserva
 
     def exemplares_disponiveis(self):
         return any(exemplar.status == "Disponível" for exemplar in self._exemplars)

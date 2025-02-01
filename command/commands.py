@@ -94,25 +94,19 @@ class ConsultaExemplaresLivroCommand(Command):
             elif status == "Reservado":
                 print(f"Exemplar ID: {exemplar.exemplar_id} - Reservado por {exemplar.reserved_by.name}")
 
-class ReservaCommand(Command):
-    def __init__(self, user_id, book_id):
-        self.user_id = user_id
-        self.book_id = book_id
-
-    def execute(self):
-        # Implementar lógica de reserva aqui
-        # ...código existente...
-        pass
-
 class ObservacaoCommand(Command):
-    def __init__(self, user_id, book_id):
-        self.user_id = user_id
-        self.book_id = book_id
-
-    def execute(self):
-        # Implementar lógica de observação aqui
-        # ...código existente...
-        pass
+    def execute(self, carregador_parametros):
+        library_system = LibrarySystem.get_instance()
+        user_id = int(carregador_parametros.get_parametro(0))
+        book_id = int(carregador_parametros.get_parametro(1))
+        
+        user = next((u for u in library_system.users if u.user_id == user_id), None)
+        book = next((b for b in library_system.books if b.book_id == book_id), None)
+        
+        if user and book:
+            user.observar(book)
+        else:
+            print("Usuário ou livro não encontrado.")
 
 class ConsultaLivroCommand(Command):
     def __init__(self, book_id):

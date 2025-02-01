@@ -1,12 +1,14 @@
 from strategy.aluno_graduacao import EmprestimoAlunoGraduacaoStrategy
 from strategy.aluno_pos_graduacao import EmprestimoAlunoPosGraduacaoStrategy
 from strategy.professor import EmprestimoProfessorStrategy
+from observer.observers import Observer
 
 class User:
     def __init__(self, user_id, user_type, name):
         self._user_id = user_id
         self._user_type = user_type
         self._name = name
+        self._observed_books = []  # Lista de livros observados pelo usuário
         self._loans = []
         self._reservations = []
         self._notifications = 0
@@ -34,6 +36,10 @@ class User:
     @property
     def notifications(self):
         return self._notifications
+    
+    @property
+    def observed_books(self):
+        return self._observed_books
 
     def add_loan(self, loan):
         self._loans.append(loan)
@@ -60,3 +66,12 @@ class User:
             "Professor": EmprestimoProfessorStrategy
         }
         return strategies[self._user_type]()
+    
+    def observar(self, book):
+        if book not in self._observed_books:
+            self._observed_books.append(book)
+            book.add_observer(self)  # Supondo que o livro tenha um método para adicionar observadores
+            print(f"{self.name} agora está observando o livro {book.title}.")
+
+    def update(self, book):
+        print(f"Notificação para {self.name}: O livro {book.title} foi atualizado.")
