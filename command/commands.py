@@ -43,7 +43,6 @@ class ListarUsuariosCommand(Command):
         for user in library_system.users:
             print(f"ID: {user.user_id}, Nome: {user.name}, Tipo: {user.user_type}")
 
-
 class ListarLivrosCommand(Command):
     def execute(self, carregador_parametros=None):
         library_system = LibrarySystem.get_instance()
@@ -53,6 +52,26 @@ class ListarLivrosCommand(Command):
         print("Livros disponíveis:")
         for book in library_system.books:
             print(f"ID: {book.book_id}, Título: {book.title}, Autor(es): {book.authors}, Editora: {book.publisher}, Ano: {book.year}")
+
+class ConsultaExemplaresLivroCommand(Command):
+    def __init__(self, book_id):
+        self.book_id = book_id
+
+    def execute(self):
+        library_system = LibrarySystem.get_instance()
+        book = next((b for b in library_system.books if b.book_id == self.book_id), None)
+        if not book:
+            print("Livro não encontrado.")
+            return
+        print(f"Exemplares do livro '{book.title}':")
+        for exemplar in book.exemplars:
+            status = exemplar.status
+            if status == "Disponível":
+                print(f"Exemplar ID: {exemplar.exemplar_id} - Disponível")
+            elif status == "Emprestado":
+                print(f"Exemplar ID: {exemplar.exemplar_id} - Emprestado para {exemplar.loaned_to.name}")
+            elif status == "Reservado":
+                print(f"Exemplar ID: {exemplar.exemplar_id} - Reservado por {exemplar.reserved_by.name}")
 
 class DevolucaoCommand(Command):
     def __init__(self, user_id, book_id):
@@ -110,3 +129,4 @@ class ConsultaNotificacoesCommand(Command):
         # Implementar lógica de consulta de notificações aqui
         # ...código existente...
         pass
+
