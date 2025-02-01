@@ -1,6 +1,6 @@
-from singleton import LibrarySystem
-from commands import EmprestimoCommand
-from carregador_parametros import CarregadorParametros
+from singleton.biblioteca import LibrarySystem
+from command.commands import EmprestimoCommand
+from command.carregador_parametros import CarregadorParametros
 
 def main():
     library_system = LibrarySystem.get_instance()

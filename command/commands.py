@@ -1,6 +1,6 @@
-from strategies import EmprestimoAlunoGraduacaoStrategy, EmprestimoAlunoPosGraduacaoStrategy, EmprestimoProfessorStrategy
+from strategy.strategies import EmprestimoAlunoGraduacaoStrategy, EmprestimoAlunoPosGraduacaoStrategy, EmprestimoProfessorStrategy
 from models import User, Book, Exemplar
-from singleton import LibrarySystem
+from singleton.biblioteca import LibrarySystem
 from datetime import datetime, timedelta
 
 class Command:

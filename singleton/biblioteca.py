@@ -19,7 +19,6 @@ class LibrarySystem:
             self._initialize_test_data()
 
     def _initialize_test_data(self):
-
         # Usuários
         self.users.append(User(123, "Aluno Graduação", "João da Silva"))
         self.users.append(User(456, "Aluno Pós-Graduação", "Luiz Fernando Rodrigues"))
