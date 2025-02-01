@@ -28,11 +28,22 @@ class LibrarySystem:
         self.users.append(User(100, "Professor", "Carlos Lucena"))
 
         # Livros
-        self.books.append(Book(100, "Engenharia de Software", "Addison Wesley", "Ian Sommerville", "6ª", 2000))
-        self.books.append(Book(101, "UML - Guia do Usuário", "Campus", "Grady Booch, James Rumbaugh, Ivar Jacobson", "7ª", 2000))
-        self.books.append(Book(200, "Code Complete", "Microsoft Press", "Steve McConnell", "2ª", 2014))
-        self.books.append(Book(201, "Agile Software Development, Principles, Patterns and Practices", "Prentice Hall", "Robert Martin", "1ª", 2002))
-        self.books.append(Book(300, "Refactoring: Improving the Design of Existing Code", "Addison Wesley", "Martin Fowler", "1ª", 1999))
-        self.books.append(Book(301, "Software Metrics: A rigorous and Practical Approach", "CRC Press", "Norman Fenton, James Bieman", "3ª", 2014))
-        self.books.append(Book(400, "Design Patterns: Elements of Reusable Object-Oriented Software", "Addison Wesley", "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides", "1ª", 1994))
-        self.books.append(Book(401, "UML Distilled: A Brief Guide to the Standard Object Modeling Language", "Addison Wesley", "Martin Fowler", "3ª", 2003))
+        books_data = [
+            (100, "Engenharia de Software", "Addison Wesley", "Ian Sommerville", "6ª", 2000, 2),
+            (101, "UML - Guia do Usuário", "Campus", "Grady Booch, James Rumbaugh, Ivar Jacobson", "7ª", 2000, 1),
+            (200, "Code Complete", "Microsoft Press", "Steve McConnell", "2ª", 2014, 1),
+            (201, "Agile Software Development, Principles, Patterns and Practices", "Prentice Hall", "Robert Martin", "1ª", 2002, 1),
+            (300, "Refactoring: Improving the Design of Existing Code", "Addison Wesley", "Martin Fowler", "1ª", 1999, 1),
+            (301, "Software Metrics: A rigorous and Practical Approach", "CRC Press", "Norman Fenton, James Bieman", "3ª", 2014, 0),
+            (400, "Design Patterns: Elements of Reusable Object-Oriented Software", "Addison Wesley", "Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides", "1ª", 1994, 0),
+            (401, "UML Distilled: A Brief Guide to the Standard Object Modeling Language", "Addison Wesley", "Martin Fowler", "3ª", 2003, 0)
+        ]
+
+        exemplar_id_counter = 1
+        for book_data in books_data:
+            book_id, title, publisher, authors, edition, year, exemplars_count = book_data
+            book = Book(book_id, title, publisher, authors, edition, year)
+            for _ in range(exemplars_count):
+                book.exemplars.append(Exemplar(book_id, exemplar_id_counter, "Disponível"))
+                exemplar_id_counter += 1
+            self.books.append(book)

@@ -170,4 +170,4 @@ Código do Livro  Código Exemplar  Status Exemplar
 101              03               Disponível
 200              04               Disponível
 201              05               Disponível
-300              06
+300              06               Disponível
