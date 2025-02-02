@@ -2,7 +2,6 @@ from datetime import datetime
 from strategy.aluno_graduacao import EmprestimoAlunoGraduacaoStrategy
 from strategy.aluno_pos_graduacao import EmprestimoAlunoPosGraduacaoStrategy
 from strategy.professor import EmprestimoProfessorStrategy
-from observer.observers import Observer
 
 class Reservation:
     def __init__(self, book, date):
@@ -14,11 +13,16 @@ class User:
         self._user_id = user_id
         self._user_type = user_type
         self._name = name
+        self._emprestimo = self.get_emprestimo_strategy()
         self._observed_books = []  # Lista de livros observados pelo usuário
         self._loans = []
         self._reservations = []
         self._notifications = 0
         self._loan_history = []  # Histórico de empréstimos
+        
+    @property
+    def emprestimo(self):
+        return self._emprestimo
 
     @property
     def user_id(self):
@@ -57,6 +61,9 @@ class User:
 
     def add_reservation(self, book):
         self._reservations.append(Reservation(book, datetime.now()))
+
+    def remove_reservation(self, book_id):
+        self._reservations = [reservation for reservation in self._reservations if reservation.book.book_id != book_id]
 
     def increment_notifications(self):
         self._notifications += 1

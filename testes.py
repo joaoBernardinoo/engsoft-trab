@@ -4,7 +4,7 @@ from command.interface_usuario import InterfaceUsuario
 
 # crie uma função que executa um comando ex: "execute("emp 123 100")
 def addCommand(command):
-    print(command)
+    # print(command)
     library_system = LibrarySystem.get_instance()
     interface_usuario = InterfaceUsuario()
     parts = command.split()
@@ -13,12 +13,17 @@ def addCommand(command):
     interface_usuario.executar_comando(str_comando, parametros)
 
 def main():
-    addCommand("res 123 101")
-    addCommand("res 456 101")
-    addCommand("emp 456 101")
-    addCommand("emp 123 101")
-    addCommand("dev 123 101")
-    addCommand("res 456 101")
-    addCommand("emp 456 101")
+    addCommand("res 123 200")
+    addCommand("liv 200")
+    addCommand("emp 123 200")
+    # print("----")
+    # addCommand("res 123 100")
+    # addCommand("liv 100")
+    # addCommand("emp 123 100")
+    # addCommand("res 456 101")
+    # addCommand("emp 456 101")
+    # addCommand("dev 123 101")
+    # addCommand("res 456 101")
+    # addCommand("emp 456 101")
 if __name__ == "__main__":
     main()
