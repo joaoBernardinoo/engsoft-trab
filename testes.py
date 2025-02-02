@@ -26,10 +26,19 @@ def main():
 
     print("\nTestar Observação")
     addCommand("obs 100 100")
+    addCommand("obs 100 101")
     addCommand("res 123 100")
     addCommand("res 456 100")
+    addCommand("res 123 101")
+    addCommand("ntf 100")
     addCommand("res 789 100")
     addCommand("ntf 100")
+    addCommand("res 456 101")
+    addCommand("res 789 101")
+    addCommand("ntf 100")
+
+
+
 
 
     print("\nTestar Consulta Livros")

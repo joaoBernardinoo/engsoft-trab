@@ -1,4 +1,4 @@
-from observer.observers import Observable
+from observer.observable import Observable
 
 class Book(Observable):
     def __init__(self, book_id, title, publisher, authors, edition, year):
