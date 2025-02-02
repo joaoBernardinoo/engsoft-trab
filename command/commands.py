@@ -13,25 +13,29 @@ class EmprestimoCommand(Command):
         
         user = next((u for u in library_system.users if u.user_id == user_id), None)
         book = next((b for b in library_system.books if b.book_id == book_id), None)
+        exemplar = next((e for e in book.exemplars if e.status == "Disponível"), None)
         
-        if user and book:
-            strategy = user.get_emprestimo_strategy()
-            if strategy.pode_emprestar(user, book):
-                exemplar = next((e for e in book.exemplars if e.status == "Disponível"), None)
-                if exemplar:
-                    exemplar.status = "Emprestado"
-                    exemplar.loaned_to = user
-                    exemplar.loan_date = datetime.now()
-                    exemplar.return_date = datetime.now() + timedelta(days=strategy.tempo_emprestimo())
-                    user.add_loan(exemplar)
-                    print(f"Empréstimo realizado com sucesso para {user.name} - {book.title}")
-                    print([emprestado.exemplar_id for emprestado in user.loans])
-                else:
-                    print(f"Não há exemplares disponíveis para o livro {book.title}")
-            else:
-                print(f"Empréstimo não permitido para {user.name} - {book.title}")
-        else:
+        if not (user and book):
+            print(f"Empréstimo não permitido para {user.name} - {book.title}")
+            return
+            
+        strategy = user.get_emprestimo_strategy()
+
+        if not strategy.pode_emprestar(user, book):
             print("Usuário ou livro não encontrado.")
+            return
+        
+        if not exemplar:
+            print(f"Não há exemplares disponíveis para o livro {book.title}")
+            return
+        
+        exemplar.status = "Emprestado"
+        exemplar.loaned_to = user
+        exemplar.loan_date = datetime.now()
+        exemplar.return_date = datetime.now() + timedelta(days=strategy.tempo_emprestimo())
+        user.add_loan(exemplar)
+        
+        print(f"Empréstimo realizado com sucesso para {user.name} - {book.title}")
 
 class DevolucaoCommand(Command):
     def execute(self, carregador_parametros):
@@ -54,7 +58,21 @@ class DevolucaoCommand(Command):
             else:
                 print(f"Não há empréstimo em aberto para o livro {book.title} e o usuário {user.name}")
         else:
+        if not (user and book):
             print("Usuário ou livro não encontrado.")
+            return
+
+        exemplar = next((e for e in book.exemplars if e.loaned_to == user), None)
+        if not exemplar:
+            print(f"Não há empréstimo em aberto para o livro {book.title} e o usuário {user.name}")
+            return
+
+        exemplar.status = "Disponível"
+        exemplar.loaned_to = None
+        exemplar.loan_date = None
+        exemplar.return_date = None
+        user.loans.remove(exemplar)
+        print(f"Devolução realizada com sucesso para {user.name} - {book.title}")
 
 class ListarUsuariosCommand(Command):
     def execute(self, carregador_parametros=None):
@@ -81,9 +99,11 @@ class ConsultaExemplaresLivroCommand(Command):
         library_system = LibrarySystem.get_instance()
         book_id = int(carregador_parametros.get_parametro(0))
         book = next((b for b in library_system.books if b.book_id == book_id), None)
+
         if not book:
             print("Livro não encontrado.")
             return
+        
         print(f"Exemplares do livro '{book.title}':")
         for exemplar in book.exemplars:
             status = exemplar.status
@@ -103,31 +123,32 @@ class ReservaCommand(Command):
         user = next((u for u in library_system.users if u.user_id == user_id), None)
         book = next((b for b in library_system.books if b.book_id == book_id), None)
         
-        if user and book:
-            exemplar = next((e for e in book.exemplars if e.status == "Disponível"), None)
-            
-            if not exemplar:
-                print(f"Não há exemplares disponíveis para o livro {book.title}")
-
-            if len(user.reservations) >= 3:
-                print(f"Reserva não permitida para {user.name} - Limite de reservas atingido")
-                return
-
-            if not any(reservation.user_id == user.user_id for reservation in book.reservations):
-                print(f"Reserva não permitida para {user.name} - Usuário já possui reserva para o livro {book.title}")
-                return
-            
-            if len(book.reservations) >= len(book.exemplars):
-                    print(f"Reserva não permitida para {user.name} - Todas as reservas estão preenchidas")
-                    return
-
-            book.add_reservation(user_id)
-            user.add_reservation(book_id)
-            
-            print(f"Reserva realizada com sucesso para {user.name} - {book.title}")
-            
-        else:
+        if not (user and book):
             print("Usuário ou livro não encontrado.")
+            return
+
+        exemplar = next((e for e in book.exemplars if e.status == "Disponível"), None)
+        
+        if not exemplar:
+            print(f"Não há exemplares disponíveis para o livro {book.title}")
+            return
+
+        if len(user.reservations) >= 3:
+            print(f"Reserva não permitida para {user.name} - Limite de reservas atingido")
+            return
+
+        if any(reservation.user_id == user.user_id for reservation in book.reservations):
+            print(f"Reserva não permitida para {user.name} - Usuário já possui reserva para o livro {book.title}")
+            return
+        
+        if book.reservas_count() >= len(book.exemplars):
+            print(f"Reserva não permitida para {user.name} - Todas as reservas estão preenchidas")
+            return
+
+        book.add_reservation(user_id)
+        user.add_reservation(book_id)
+        
+        print(f"Reserva realizada com sucesso para {user.name} - {book.title}")
 
 class ObservacaoCommand(Command):
     def execute(self, carregador_parametros):

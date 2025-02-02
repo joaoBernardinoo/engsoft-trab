@@ -11,6 +11,7 @@ class Book(Observable):
         self._year = year
         self._exemplars = []
         self._reservations = []
+        self._reservation_count = 0
 
     @property
     def book_id(self):
@@ -44,6 +45,10 @@ class Book(Observable):
     def reservations(self):
         return self._reservations
 
+    @property
+    def reservation_count(self):
+        return self._reservation_count
+
     def add_exemplar(self, exemplar):
         exemplar.book = self  # Definir a referência ao livro
         self._exemplars.append(exemplar)
@@ -51,13 +56,14 @@ class Book(Observable):
 
     def add_reservation(self, reservation):
         self._reservations.append(reservation)
+        self._reservation_count += 1
         self.notify_observers()  # Notificar observadores sobre a adição de uma nova reserva
 
     def exemplares_disponiveis(self):
         return any(exemplar.status == "Disponível" for exemplar in self._exemplars)
 
     def reservas_count(self):
-        return len(self._reservations)
+        return self._reservation_count
 
     def exemplares_count(self):
         return len(self._exemplars)
