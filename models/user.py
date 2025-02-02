@@ -2,24 +2,27 @@ from datetime import datetime
 from strategy.aluno_graduacao import EmprestimoAlunoGraduacaoStrategy
 from strategy.aluno_pos_graduacao import EmprestimoAlunoPosGraduacaoStrategy
 from strategy.professor import EmprestimoProfessorStrategy
-
-class Reservation:
-    def __init__(self, book, date):
-        self.book = book
-        self.date = date
+from observer.observador import Observador
+from models.emprestimo_manager import EmprestimoManager
+from models.reserva_manager import ReservaManager
+from models.reservation import Reservation
 
 class User:
     def __init__(self, user_id, user_type, name):
         self._user_id = user_id
         self._user_type = user_type
         self._name = name
+        self._observador = Observador(self)
         self._emprestimo = self.get_emprestimo_strategy()
-        self._observed_books = []  # Lista de livros observados pelo usuário
-        self._loans = []
-        self._reservations = []
         self._notifications = 0
-        self._loan_history = []  # Histórico de empréstimos
+        self._observed_books = []  # Lista de livros observados pelo usuário
+        self._emprestimo_manager = EmprestimoManager()
+        self._reserva_manager = ReservaManager()
 
+    @property
+    def observador(self):
+        return self._observador
+        
     @property
     def emprestimo(self):
         return self._emprestimo
@@ -38,11 +41,11 @@ class User:
 
     @property
     def loans(self):
-        return self._loans
+        return self._emprestimo_manager.loans
 
     @property
     def reservations(self):
-        return self._reservations
+        return self._reserva_manager.reservations
 
     @property
     def notifications(self):
@@ -53,30 +56,31 @@ class User:
         return self._observed_books
 
     def add_loan(self, loan):
-        self._loans.append(loan)
+        self._emprestimo_manager.add_loan(loan)
 
     def return_loan(self, loan):
-        self._loans.remove(loan)
-        loan.return_date = datetime.now()  # Atualizar a data de devolução para a data atual
-        self._loan_history.append(loan)
+        self._emprestimo_manager.return_loan(loan)
+
+    def add_loan_history(self, emprestimo):
+        self._emprestimo_manager.loan_history.append(emprestimo)
 
     def add_reservation(self, book):
-        self._reservations.append(Reservation(book, datetime.now()))
+        self._reserva_manager.add_reservation(book)
 
     def remove_reservation(self, book_id):
-        self._reservations = [reservation for reservation in self._reservations if reservation.book.book_id != book_id]
+        self._reserva_manager.remove_reservation(book_id)
 
     def increment_notifications(self):
         self._notifications += 1
 
     def is_devedor(self):
-        return any(loan.is_overdue() for loan in self._loans)
+        return self._emprestimo_manager.is_devedor()
 
     def livros_emprestados_count(self):
-        return len(self._loans)
+        return self._emprestimo_manager.livros_emprestados_count()
 
     def has_emprestimo(self, book):
-        return any(loan.book_id == book.book_id for loan in self._loans)
+        return self._emprestimo_manager.has_emprestimo(book)
 
     def get_emprestimo_strategy(self):
         strategies = {
@@ -89,30 +93,27 @@ class User:
     def observar(self, book):
         if book not in self._observed_books:
             self._observed_books.append(book)
-            book.add_observer(self)
+            book.add_observer(self._observador)
             print(f"{self.name} agora está observando o livro {book.title}.")
-
-    def update(self, book):
-        print(f"Notificação para {self.name}: O livro {book.title} foi atualizado.")
 
     def get_user_loans_and_reservations(self):
         loans = [{
             "title": loan.book.title,
-            "loan_date": loan.loan_date,
+            "loan_date": loan.loan_date.strftime("%d/%m/%Y") if loan.loan_date else "Data não disponível",
             "status": "Em curso",
-            "return_date": None  # Data de devolução como None para empréstimos em curso
-        } for loan in self._loans]
+            "return_date": "Não devolvido"  
+        } for loan in self._emprestimo_manager.loans]
 
         loan_history = [{
-            "title": loan.book.title,
-            "loan_date": loan.loan_date,
+            "title": emprestimo.book.title,
+            "loan_date": emprestimo.loan_date.strftime("%d/%m/%Y") if emprestimo.loan_date else "Data não disponível",
             "status": "Finalizado",
-            "return_date": loan.return_date
-        } for loan in self._loan_history]
+            "return_date": emprestimo.return_date.strftime("%d/%m/%Y") if emprestimo.return_date else "Data não disponível"
+        } for emprestimo in self._emprestimo_manager.loan_history]
 
         reservations = [{
             "title": reservation.book.title,
-            "reservation_date": reservation.date
-        } for reservation in self._reservations]
+            "reservation_date": reservation.date.strftime("%d/%m/%Y") if reservation.date else "Data não disponível"
+        } for reservation in self._reserva_manager.reservations]
 
         return loans + loan_history, reservations

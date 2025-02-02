@@ -29,7 +29,7 @@ class LibrarySystem:
 
         # Livros
         books_data = [
-            (100, "Engenharia de Software", "Addison Wesley", "Ian Sommerville", "6ª", 2000, 2),
+            (100, "Engenharia de Software", "Addison Wesley", "Ian Sommerville", "6ª", 2000, 3),
             (101, "UML - Guia do Usuário", "Campus", "Grady Booch, James Rumbaugh, Ivar Jacobson", "7ª", 2000, 1),
             (200, "Code Complete", "Microsoft Press", "Steve McConnell", "2ª", 2014, 1),
             (201, "Agile Software Development, Principles, Patterns and Practices", "Prentice Hall", "Robert Martin", "1ª", 2002, 1),

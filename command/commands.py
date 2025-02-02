@@ -1,5 +1,7 @@
 from singleton.biblioteca import LibrarySystem
 from datetime import datetime, timedelta
+from models.emprestimo import Emprestimo
+
 
 class Command:
     def execute(self, carregador_parametros):
@@ -60,12 +62,14 @@ class DevolucaoCommand(Command):
         if not exemplar:
             print(f"Não há empréstimo em aberto para o livro {book.title} e o usuário {user.name}")
             return
+        
+        emprestimo = Emprestimo(exemplar.book, exemplar.loan_date, datetime.now())
 
         exemplar.status = "Disponível"
         exemplar.loaned_to = None
         exemplar.loan_date = None
-        exemplar.return_date = datetime.now()  # Atualizar a data de devolução para a data atual
-        user.return_loan(exemplar)  # Mover o empréstimo para o histórico
+        user.return_loan(exemplar)
+        user.add_loan_history(emprestimo)
         print(f"Devolução realizada com sucesso para {user.name} - {book.title}")
 
 class ListarUsuariosCommand(Command):
@@ -176,11 +180,14 @@ class ConsultaUsuarioCommand(Command):
             print("Usuário não encontrado.")
 
 class ConsultaNotificacoesCommand(Command):
-    def __init__(self, user_id):
-        self.user_id = user_id
-
-    def execute(self):
-        # Implementar lógica de consulta de notificações aqui
-        # ...código existente...
-        pass
+    def execute(self, carregador_parametros):
+        library_system = LibrarySystem.get_instance()
+        user_id = int(carregador_parametros.get_parametro(0))
+        
+        user = next((u for u in library_system.users if u.user_id == user_id), None)
+        
+        if user:
+            print(f"{user.name} recebeu {user.observador.notifications} notificações.")
+        else:
+            print("Usuário não encontrado.")
 
