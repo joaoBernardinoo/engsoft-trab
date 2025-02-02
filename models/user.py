@@ -49,8 +49,8 @@ class User:
         self._loans.remove(loan)
         self._loan_history.append(loan)
 
-    def add_reservation(self, reservation):
-        self._reservations.append(reservation)
+    def add_reservation(self, book):
+        self._reservations.append(book)
 
     def increment_notifications(self):
         self._notifications += 1
@@ -85,8 +85,8 @@ class User:
         loans = [{
             "title": loan.book.title,
             "loan_date": loan.loan_date,
-            "status": "Em curso" if loan.return_date is None else "Finalizado",
-            "return_date": loan.return_date
+            "status": "Em curso",
+            "return_date": None  # Data de devolução como None para empréstimos em curso
         } for loan in self._loans]
 
         loan_history = [{

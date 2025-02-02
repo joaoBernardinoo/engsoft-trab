@@ -34,7 +34,7 @@ class EmprestimoCommand(Command):
         exemplar.loan_date = datetime.now()
         exemplar.return_date = datetime.now() + timedelta(days=strategy.tempo_emprestimo())
         user.add_loan(exemplar)
-
+        
         print(f"Empréstimo realizado com sucesso para {user.name} - {book.title}")
 
 class DevolucaoCommand(Command):
@@ -59,7 +59,7 @@ class DevolucaoCommand(Command):
         exemplar.loaned_to = None
         exemplar.loan_date = None
         exemplar.return_date = None
-        user.loans.remove(exemplar)
+        user.return_loan(exemplar)  # Mover o empréstimo para o histórico
         print(f"Devolução realizada com sucesso para {user.name} - {book.title}")
 
 class ListarUsuariosCommand(Command):
@@ -133,8 +133,8 @@ class ReservaCommand(Command):
             print(f"Reserva não permitida para {user.name} - Todas as reservas estão preenchidas")
             return
 
-        book.add_reservation(user_id)
-        user.add_reservation(book_id)
+        book.add_reservation(user)
+        user.add_reservation(book)
         
         print(f"Reserva realizada com sucesso para {user.name} - {book.title}")
 

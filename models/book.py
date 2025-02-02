@@ -54,9 +54,8 @@ class Book(Observable):
         self._exemplars.append(exemplar)
         self.notify_observers()  # Notificar observadores sobre a adição de um novo exemplar
 
-    def add_reservation(self, reservation):
-        self._reservations.append(reservation)
-        self._reservation_count += 1
+    def add_reservation(self, user):
+        self._reservations.append(user)
         self.notify_observers()  # Notificar observadores sobre a adição de uma nova reserva
 
     def exemplares_disponiveis(self):
