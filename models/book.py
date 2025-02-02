@@ -50,6 +50,7 @@ class Book(Observable):
         return self._reservation_count
 
     def add_exemplar(self, exemplar):
+        exemplar.book = self  # Definir a referência ao livro
         self._exemplars.append(exemplar)
         self.notify_observers()  # Notificar observadores sobre a adição de um novo exemplar
 

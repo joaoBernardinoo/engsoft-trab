@@ -1,4 +1,4 @@
-from command.commands import EmprestimoCommand, ListarUsuariosCommand, ListarLivrosCommand, ConsultaExemplaresLivroCommand, DevolucaoCommand, ObservacaoCommand, ReservaCommand
+from command.commands import EmprestimoCommand, ListarUsuariosCommand, ListarLivrosCommand, ConsultaExemplaresLivroCommand, DevolucaoCommand, ObservacaoCommand, ReservaCommand, ConsultaUsuarioCommand
 
 class InterfaceUsuario:
     def __init__(self):
@@ -9,7 +9,8 @@ class InterfaceUsuario:
             "llv": ListarLivrosCommand(),
             "liv": ConsultaExemplaresLivroCommand(),
             "obs": ObservacaoCommand(),
-            "res": ReservaCommand()
+            "res": ReservaCommand(),
+            "usu": ConsultaUsuarioCommand()
         }
 
     def executar_comando(self, str_comando, parametros):

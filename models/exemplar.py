@@ -8,6 +8,7 @@ class Exemplar:
         self._loaned_to = None
         self._loan_date = None
         self._return_date = None
+        self._book = None  # Referência ao livro ao qual pertence
 
     @property
     def book_id(self):
