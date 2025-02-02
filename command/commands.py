@@ -16,18 +16,24 @@ class EmprestimoCommand(Command):
         exemplar = next((e for e in book.exemplars if e.status == "Disponível"), None)
         
         if not (user and book):
-            print(f"Empréstimo não permitido para {user.name} - {book.title}")
+            print("Usuário ou livro não encontrado.")
             return
             
         strategy = user.get_emprestimo_strategy()
 
         if not strategy.pode_emprestar(user, book):
-            print("Usuário ou livro não encontrado.")
+            print(f"Empréstimo de '{book.title}' não permitido para {user.name}")
             return
         
         if not exemplar:
             print(f"Não há exemplares disponíveis para o livro {book.title}")
             return
+        
+        # Remove reservation if exists
+        reservation = next((r for r in user.reservations if r.book.book_id == book.book_id), None)
+        if reservation:
+            user.remove_reservation(book)
+            book.remove_reservation(user)
         
         exemplar.status = "Emprestado"
         exemplar.loaned_to = user
@@ -113,12 +119,6 @@ class ReservaCommand(Command):
         
         if not (user and book):
             print("Usuário ou livro não encontrado.")
-            return
-
-        exemplar = next((e for e in book.exemplars if e.status == "Disponível"), None)
-        
-        if not exemplar:
-            print(f"Não há exemplares disponíveis para o livro {book.title}")
             return
 
         if len(user.reservations) >= 3:
