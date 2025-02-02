@@ -125,7 +125,7 @@ class ReservaCommand(Command):
             print(f"Reserva não permitida para {user.name} - Limite de reservas atingido")
             return
 
-        if any(reservation == user.user_id for reservation in book.reservations):
+        if any(reservation.book.book_id == book.book_id for reservation in user.reservations):
             print(f"Reserva não permitida para {user.name} - Usuário já possui reserva para o livro {book.title}")
             return
         
