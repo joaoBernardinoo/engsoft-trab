@@ -81,29 +81,7 @@ O sistema deve permitir que professores se registrem para receber notificações
 
 Dado o código de um livro, o sistema deve apresentar suas informações da seguinte forma: (i) título, (ii) quantidade de reservas para aquele livro, e, se diferente de zero, devem ser também apresentados o nome dos usuários que realizaram cada reserva, (iii) para cada exemplar, deve ser apresentado seu código, seu status (disponível ou emprestado). Caso o exemplar esteja emprestado deverá ser exibido o nome do usuário que realizou o empréstimo, a data de empréstimo e a data prevista para devolução. Para solicitar tal consulta, o usuário deverá digitar o comando “liv”, seguido do código do livro.
 
-**3.6. Consulta de Informações de Usuário** X
 
-Dado um usuário, o sistema deverá apresentar a lista de todos os seus empréstimos correntes e passados, assim como de suas reservas. A listagem de cada empréstimo deverá apresentar o título do livro, a data do empréstimo, o status atual do empréstimo (em curso ou finalizado) e a data de devolução realizada ou prevista. A listagem das reservas deverá apresentar o título do livro reservado e a data da solicitação da reserva. Para solicitar tal consulta, o usuário deverá digitar o comando “usu”, seguido do código do usuário.
-
-**3.7. Consulta de Notificações Recebidas**
-
-Dado um professor, o sistema deverá retornar o número total de vezes que ele foi notificado sobre a ocorrência de mais de duas reservas simultâneas nos livros que ele está observando. Para solicitar tal consulta, o usuário deverá digitar o comando “ntf”, seguido do código do usuário. **Não há necessidade de validar se o código digitado se refere realmente ao de um professor.**
-
-6. E por fim, o usuário deve ter a opção de sair do sistema. Para isso, basta digitar o comando “sai”.
-
-**4. Exigências do Projeto**
-
-4.1. O sistema NÃO deve se preocupar com a persistência de dados, ou seja, NÃO deve usar banco de dados. Os objetos relativos aos dados de teste (Seção 7) deverão ser instanciados na memória no momento da inicialização do sistema.
-
-4.2. O projeto deve ter uma classe que mantenha as listas (ou estruturas similares) de usuários e livros existentes no sistema. Essa classe deve ser projetada de acordo com o padrão de projeto Singleton.
-
-4.3. O sistema NÃO deve disponibilizar funcionalidades de cadastros de livros, usuários e exemplares.
-
-4.4. O sistema NÃO deve ter interface gráfica com o usuário. Todos os comandos devem ser fornecidos via linha de comando, e suas respostas devem ser mostradas no console.
-
-4.5. A classe do item anterior deve se comunicar com as classes de negócio (inclusive a classe que mantém as listas de livros e usuários) por meio de um esquema de comandos, projetados de acordo com o padrão de projeto “Command”.
-
-4.6. Evite o uso de “if” ou “switch” para saber o tipo de usuário que está lidando. **Em particular, implemente, sem uso de condicionais, um padrão de projeto que permita selecionar, a depender do tipo de usuário, qual regra de empréstimo deve ser usada para verificar se o empréstimo pode ser realizado ou não.**
 
 **5. Entrega do Trabalho**
 
@@ -126,11 +104,6 @@ O projeto será avaliado de acordo com os seguintes critérios:
 ● Uso de padrões de projeto;
 ● Conformidade com a descrição do trabalho.
 ```
-
-**7. Dados de Teste**
-
-O sistema NÃO deve se preocupar com a persistência dos dados, ou seja, não deve usar banco de dados. Para testar o sistema, vocês podem criar dados de teste na memória (instanciar) durante a inicialização do programa. Abaixo, são fornecidos alguns exemplos de dados de teste.
-
 **Usuários**
 
 ```

@@ -1,4 +1,4 @@
-from observer.observers import Observable
+from observer.observable import Observable
 
 class Book(Observable):
     def __init__(self, book_id, title, publisher, authors, edition, year):
@@ -73,9 +73,6 @@ class Book(Observable):
 
     def exemplares_count(self):
         return len(self._exemplars)
-
-    def is_reserved_by(self, user):
-        return any(reservation == user.user_id for reservation in self._reservations)
         
     def is_loaned_to(self, user):
         return any(exemplar.loaned_to == user for exemplar in self._exemplars if exemplar.status == "Emprestado")

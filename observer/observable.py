@@ -1,7 +1,3 @@
-class Observer:
-    def update(self, book):
-        pass
-
 class Observable:
     def __init__(self):
         self._observers = []
