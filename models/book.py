@@ -69,7 +69,7 @@ class Book(Observable):
         return len(self._exemplars)
 
     def is_reserved_by(self, user):
-        return any(reservation.user_id == user.user_id for reservation in self._reservations)
+        return any(reservation == user.user_id for reservation in self._reservations)
 
     def is_loaned_to(self, user):
         return any(exemplar.loaned_to == user for exemplar in self._exemplars if exemplar.status == "Emprestado")
