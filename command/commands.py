@@ -176,11 +176,14 @@ class ConsultaUsuarioCommand(Command):
             print("Usuário não encontrado.")
 
 class ConsultaNotificacoesCommand(Command):
-    def __init__(self, user_id):
-        self.user_id = user_id
-
-    def execute(self):
-        # Implementar lógica de consulta de notificações aqui
-        # ...código existente...
-        pass
+    def execute(self, carregador_parametros):
+        library_system = LibrarySystem.get_instance()
+        user_id = int(carregador_parametros.get_parametro(0))
+        
+        user = next((u for u in library_system.users if u.user_id == user_id), None)
+        
+        if user:
+            print(f"O professor {user_id} recebeu {user.notifications} notificações de múltiplas reservas simultâneas.")
+        else:
+            print("Usuário não encontrado.")
 

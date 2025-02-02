@@ -17,3 +17,14 @@ class Observable:
     def notify_observers(self):
         for observer in self._observers:
             observer.update(self)
+
+class NotificacaoObserver:
+    def __init__(self):
+        self.notificacoes = {}  # Armazena a quantidade de notificações por professor
+
+    def atualizar(self, professor_id):
+        """Incrementa o contador de notificações para um professor."""
+        if professor_id not in self.notificacoes:
+            self.notificacoes[professor_id] = 0
+        self.notificacoes[professor_id] += 1
+
