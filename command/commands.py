@@ -64,7 +64,7 @@ class DevolucaoCommand(Command):
         exemplar.status = "Disponível"
         exemplar.loaned_to = None
         exemplar.loan_date = None
-        exemplar.return_date = None
+        exemplar.return_date = datetime.now()  # Atualizar a data de devolução para a data atual
         user.return_loan(exemplar)  # Mover o empréstimo para o histórico
         print(f"Devolução realizada com sucesso para {user.name} - {book.title}")
 
