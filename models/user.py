@@ -1,7 +1,13 @@
+from datetime import datetime
 from strategy.aluno_graduacao import EmprestimoAlunoGraduacaoStrategy
 from strategy.aluno_pos_graduacao import EmprestimoAlunoPosGraduacaoStrategy
 from strategy.professor import EmprestimoProfessorStrategy
 from observer.observers import Observer
+
+class Reservation:
+    def __init__(self, book, date):
+        self.book = book
+        self.date = date
 
 class User:
     def __init__(self, user_id, user_type, name):
@@ -50,7 +56,7 @@ class User:
         self._loan_history.append(loan)
 
     def add_reservation(self, book):
-        self._reservations.append(book)
+        self._reservations.append(Reservation(book, datetime.now()))
 
     def increment_notifications(self):
         self._notifications += 1
