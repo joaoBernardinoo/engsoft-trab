@@ -57,6 +57,7 @@ class User:
 
     def return_loan(self, loan):
         self._loans.remove(loan)
+        loan.return_date = datetime.now()  # Atualizar a data de devolução para a data atual
         self._loan_history.append(loan)
 
     def add_reservation(self, book):
