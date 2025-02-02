@@ -46,18 +46,6 @@ class DevolucaoCommand(Command):
         user = next((u for u in library_system.users if u.user_id == user_id), None)
         book = next((b for b in library_system.books if b.book_id == book_id), None)
         
-        if user and book:
-            exemplar = next((e for e in book.exemplars if e.loaned_to == user), None)
-            if exemplar:
-                exemplar.status = "Disponível"
-                exemplar.loaned_to = None
-                exemplar.loan_date = None
-                exemplar.return_date = None
-                user.return_loan(exemplar)  # Mover o empréstimo para o histórico
-                print(f"Devolução realizada com sucesso para {user.name} - {book.title}")
-            else:
-                print(f"Não há empréstimo em aberto para o livro {book.title} e o usuário {user.name}")
-        else:
         if not (user and book):
             print("Usuário ou livro não encontrado.")
             return
