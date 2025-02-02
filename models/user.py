@@ -12,6 +12,7 @@ class User:
         self._loans = []
         self._reservations = []
         self._notifications = 0
+        self._loan_history = []  # Histórico de empréstimos
 
     @property
     def user_id(self):
@@ -44,6 +45,10 @@ class User:
     def add_loan(self, loan):
         self._loans.append(loan)
 
+    def return_loan(self, loan):
+        self._loans.remove(loan)
+        self._loan_history.append(loan)
+
     def add_reservation(self, reservation):
         self._reservations.append(reservation)
 
@@ -75,3 +80,25 @@ class User:
 
     def update(self, book):
         print(f"Notificação para {self.name}: O livro {book.title} foi atualizado.")
+
+    def get_user_loans_and_reservations(self):
+        loans = [{
+            "title": loan.book.title,
+            "loan_date": loan.loan_date,
+            "status": "Em curso" if loan.return_date is None else "Finalizado",
+            "return_date": loan.return_date
+        } for loan in self._loans]
+
+        loan_history = [{
+            "title": loan.book.title,
+            "loan_date": loan.loan_date,
+            "status": "Finalizado",
+            "return_date": loan.return_date
+        } for loan in self._loan_history]
+
+        reservations = [{
+            "title": reservation.book.title,
+            "reservation_date": reservation.date
+        } for reservation in self._reservations]
+
+        return loans + loan_history, reservations

@@ -49,7 +49,7 @@ class DevolucaoCommand(Command):
                 exemplar.loaned_to = None
                 exemplar.loan_date = None
                 exemplar.return_date = None
-                user.loans.remove(exemplar)
+                user.return_loan(exemplar)  # Mover o empréstimo para o histórico
                 print(f"Devolução realizada com sucesso para {user.name} - {book.title}")
             else:
                 print(f"Não há empréstimo em aberto para o livro {book.title} e o usuário {user.name}")
@@ -153,13 +153,22 @@ class ConsultaLivroCommand(Command):
         pass
 
 class ConsultaUsuarioCommand(Command):
-    def __init__(self, user_id):
-        self.user_id = user_id
-
-    def execute(self):
-        # Implementar lógica de consulta de usuário aqui
-        # ...código existente...
-        pass
+    def execute(self, carregador_parametros):
+        library_system = LibrarySystem.get_instance()
+        user_id = int(carregador_parametros.get_parametro(0))
+        
+        user = next((u for u in library_system.users if u.user_id == user_id), None)
+        
+        if user:
+            loans, reservations = user.get_user_loans_and_reservations()
+            print(f"Empréstimos de {user.name}:")
+            for loan in loans:
+                print(f"Título: {loan['title']}, Data de Empréstimo: {loan['loan_date']}, Status: {loan['status']}, Data de Devolução: {loan['return_date']}")
+            print(f"Reservas de {user.name}:")
+            for reservation in reservations:
+                print(f"Título: {reservation['title']}, Data de Reserva: {reservation['reservation_date']}")
+        else:
+            print("Usuário não encontrado.")
 
 class ConsultaNotificacoesCommand(Command):
     def __init__(self, user_id):
