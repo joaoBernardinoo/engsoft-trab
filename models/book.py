@@ -52,12 +52,12 @@ class Book(Observable):
     def add_exemplar(self, exemplar):
         exemplar.book = self  # Definir a referência ao livro
         self._exemplars.append(exemplar)
-        self.notify_observers()  # Notificar observadores sobre a adição de um novo exemplar
 
     def add_reservation(self, user):
         self._reservations.append(user.user_id)
         self._reservation_count += 1
-        self.notify_observers()  # Notificar observadores sobre a adição de uma nova reserva
+        if self._reservation_count > 2:
+            self.notify_observers()
 
     def remove_reservation(self, user_id):
         self._reservations = [reservation for reservation in self._reservations if reservation != user_id]
@@ -73,12 +73,8 @@ class Book(Observable):
         return len(self._exemplars)
 
     def is_reserved_by(self, user):
-        ans = any(reservation == user.user_id for reservation in self._reservations)
-        if ans:
-            print(f"O livro {self.title} está reservado por {user.name}")
-        else:
-            print(f"O livro {self.title} não está reservado por {user.name}")
-        return ans
+        return any(reservation == user.user_id for reservation in self._reservations)
+        
     def is_loaned_to(self, user):
         return any(exemplar.loaned_to == user for exemplar in self._exemplars if exemplar.status == "Emprestado")
 

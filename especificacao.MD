@@ -69,7 +69,7 @@ Abaixo serão listadas outras funcionalidades que o sistema deve ter. Leia com a
 
 O sistema deve permitir a devolução de livros. Durante a devolução, o usuário deve digitar o comando “dev” seguido do código de identificação do usuário e do código de identificação do livro emprestado. Ao final, o sistema deve emitir uma mensagem de sucesso ou insucesso da devolução, mencionando o nome do usuário e o título do livro. A mensagem de insucesso deve dizer o motivo. Nesse caso, o insucesso só ocorre se não houver empréstimo em aberto daquele livro para aquele usuário.
 
-**3.3. Reserva**
+**3.3. Reserva** X
 
 O sistema deve permitir a reserva de um livro. Durante esse processo de reserva, o usuário deve digitar o comando “res”, o código de identificação do usuário e o código de identificação do livro que o usuário deseja reservar. **O sistema deve registrar a reserva com a data em que ela foi realizada.** Um usuário poderá ter no máximo 3 reservas simultâneas. Ao final, o sistema deve emitir uma mensagem de sucesso ou insucesso da reserva, que mencione o nome do usuário e o título do livro. A mensagem de insucesso deve especificar o motivo.
 
@@ -81,7 +81,7 @@ O sistema deve permitir que professores se registrem para receber notificações
 
 Dado o código de um livro, o sistema deve apresentar suas informações da seguinte forma: (i) título, (ii) quantidade de reservas para aquele livro, e, se diferente de zero, devem ser também apresentados o nome dos usuários que realizaram cada reserva, (iii) para cada exemplar, deve ser apresentado seu código, seu status (disponível ou emprestado). Caso o exemplar esteja emprestado deverá ser exibido o nome do usuário que realizou o empréstimo, a data de empréstimo e a data prevista para devolução. Para solicitar tal consulta, o usuário deverá digitar o comando “liv”, seguido do código do livro.
 
-**3.6. Consulta de Informações de Usuário**
+**3.6. Consulta de Informações de Usuário** X
 
 Dado um usuário, o sistema deverá apresentar a lista de todos os seus empréstimos correntes e passados, assim como de suas reservas. A listagem de cada empréstimo deverá apresentar o título do livro, a data do empréstimo, o status atual do empréstimo (em curso ou finalizado) e a data de devolução realizada ou prevista. A listagem das reservas deverá apresentar o título do livro reservado e a data da solicitação da reserva. Para solicitar tal consulta, o usuário deverá digitar o comando “usu”, seguido do código do usuário.
 

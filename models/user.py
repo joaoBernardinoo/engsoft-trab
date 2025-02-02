@@ -19,7 +19,7 @@ class User:
         self._reservations = []
         self._notifications = 0
         self._loan_history = []  # Histórico de empréstimos
-        
+
     @property
     def emprestimo(self):
         return self._emprestimo
@@ -88,7 +88,7 @@ class User:
     def observar(self, book):
         if book not in self._observed_books:
             self._observed_books.append(book)
-            book.add_observer(self)  # Supondo que o livro tenha um método para adicionar observadores
+            book.add_observer(self)
             print(f"{self.name} agora está observando o livro {book.title}.")
 
     def update(self, book):

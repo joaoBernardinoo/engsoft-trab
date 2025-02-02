@@ -8,6 +8,7 @@ class EmprestimoProfessorStrategy(EmprestimoStrategy):
             return False
         
         if user.is_devedor():
+            print(f"O usuário {user.name} está com empréstimos em atraso")
             return False
         
         if user.has_emprestimo(book):

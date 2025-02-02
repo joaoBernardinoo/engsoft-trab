@@ -14,7 +14,6 @@ class InterfaceUsuario:
         }
 
     def executar_comando(self, str_comando, parametros):
-        print(f"{str_comando} ",end="")
         comando = self.comandos.get(str_comando)
         if comando:
             comando.execute(parametros)

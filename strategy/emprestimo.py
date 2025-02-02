@@ -1,6 +1,6 @@
 class EmprestimoStrategy:
     def pode_emprestar(self, user, book):
-        pass
+        raise NotImplementedError
 
     def tempo_emprestimo(self):
-        pass
+        raise NotImplementedError

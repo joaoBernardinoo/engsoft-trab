@@ -13,17 +13,21 @@ def addCommand(command):
     interface_usuario.executar_comando(str_comando, parametros)
 
 def main():
-    addCommand("res 123 200")
-    addCommand("liv 200")
-    addCommand("emp 123 200")
-    # print("----")
-    # addCommand("res 123 100")
-    # addCommand("liv 100")
-    # addCommand("emp 123 100")
+    # addCommand("res 123 101")
     # addCommand("res 456 101")
     # addCommand("emp 456 101")
+    # addCommand("emp 123 101")
     # addCommand("dev 123 101")
     # addCommand("res 456 101")
     # addCommand("emp 456 101")
+
+    print("------------------")
+    print("Testar Observação")
+    addCommand("obs 100 100")
+    addCommand("res 123 100")
+    addCommand("res 789 100")
+    addCommand("emp 456 100")
+    addCommand("ntf 456")
+
 if __name__ == "__main__":
     main()

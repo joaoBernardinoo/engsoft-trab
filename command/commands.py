@@ -100,9 +100,9 @@ class ConsultaExemplaresLivroCommand(Command):
         if not book.reservations:
             print("Nenhuma reserva para este livro.")
         else:
-            print("Usuários que reservaram este livro:")
+            print("Usuários que reservaram este livro:", end="")
             for reservation in book.reservations:
-                print(f"ID: {reservation}")
+                print(f"ID: {reservation}",end="")
         print(f"Exemplares do livro '{book.title}':")
         for exemplar in book.exemplars:
             status = exemplar.status
@@ -156,15 +156,6 @@ class ObservacaoCommand(Command):
             user.observar(book)
         else:
             print("Usuário ou livro não encontrado.")
-
-class ConsultaLivroCommand(Command):
-    def __init__(self, book_id):
-        self.book_id = book_id
-
-    def execute(self):
-        # Implementar lógica de consulta de livro aqui
-        # ...código existente...
-        pass
 
 class ConsultaUsuarioCommand(Command):
     def execute(self, carregador_parametros):
