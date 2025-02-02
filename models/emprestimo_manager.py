@@ -1,5 +1,3 @@
-from datetime import datetime
-from models.emprestimo import Emprestimo
 
 class EmprestimoManager:
     def __init__(self):
@@ -19,8 +17,6 @@ class EmprestimoManager:
 
     def return_loan(self, loan):
         self._loans.remove(loan)
-        emprestimo = Emprestimo(loan.book, loan.loan_date, datetime.now())
-        self._loan_history.append(emprestimo)
 
     def is_devedor(self):
         return any(loan.is_overdue() for loan in self._loans)
@@ -30,3 +26,20 @@ class EmprestimoManager:
 
     def has_emprestimo(self, book):
         return any(loan.book_id == book.book_id for loan in self._loans)
+
+    def get_loans(self):
+        loans = [{
+            "title": loan.book.title,
+            "loan_date": loan.loan_date.strftime("%d/%m/%Y") if loan.loan_date else "Data não disponível",
+            "status": "Em curso",
+            "return_date": loan.return_date.strftime("%d/%m/%Y") if loan.return_date else "Data não disponível"  
+        } for loan in self.loans]
+
+        loan_history = [{
+            "title": emprestimo.book.title,
+            "loan_date": emprestimo.loan_date.strftime("%d/%m/%Y") if emprestimo.loan_date else "Data não disponível",
+            "status": "Finalizado",
+            "return_date": emprestimo.return_date.strftime("%d/%m/%Y") if emprestimo.return_date else "Data não disponível"
+        } for emprestimo in self.loan_history]
+
+        return loans + loan_history
