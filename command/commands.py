@@ -212,4 +212,3 @@ class ConsultaNotificacoesCommand(Command):
             print(f"{user.name} recebeu {user.observador.notifications} notificações.")
         else:
             print("Usuário não encontrado.")
-
