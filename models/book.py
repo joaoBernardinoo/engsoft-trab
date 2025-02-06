@@ -58,8 +58,6 @@ class Book(Observable):
         self._reservation_count += 1
         if self._reservation_count > 2:
             self.notify_observers()
-            for observer in self._observers:
-                observer.increment_notifications()  # Incrementar o contador de notificações
 
     def remove_reservation(self, user_id):
         self._reservations = [reservation for reservation in self._reservations if reservation != user_id]

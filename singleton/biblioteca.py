@@ -1,7 +1,6 @@
 from models.book import Book
 from models.user import User
 from models.exemplar import Exemplar
-from observer.observers import NotificacaoObserver
 
 class LibrarySystem:
     _instance = None
@@ -19,7 +18,6 @@ class LibrarySystem:
             LibrarySystem._instance = self
             self.users = []
             self.books = []
-            self.notificacao_observer = NotificacaoObserver()  # Gerencia notificações
             self._initialize_test_data()
 
     def _initialize_test_data(self):
@@ -32,7 +30,7 @@ class LibrarySystem:
         # Livros
         books_data = [
             (100, "Engenharia de Software", "Addison Wesley", "Ian Sommerville", "6ª", 2000, 4),
-            (101, "UML - Guia do Usuário", "Campus", "Grady Booch, James Rumbaugh, Ivar Jacobson", "7ª", 2000, 1),
+            (101, "UML - Guia do Usuário", "Campus", "Grady Booch, James Rumbaugh, Ivar Jacobson", "7ª", 2000, 4),
             (200, "Code Complete", "Microsoft Press", "Steve McConnell", "2ª", 2014, 1),
             (201, "Agile Software Development, Principles, Patterns and Practices", "Prentice Hall", "Robert Martin", "1ª", 2002, 1),
             (300, "Refactoring: Improving the Design of Existing Code", "Addison Wesley", "Martin Fowler", "1ª", 1999, 1),

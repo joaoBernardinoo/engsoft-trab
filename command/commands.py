@@ -209,7 +209,7 @@ class ConsultaNotificacoesCommand(Command):
         user = next((u for u in library_system.users if u.user_id == user_id), None)
         
         if user:
-            print(f"O professor {user_id} recebeu {user.notifications} notificações de múltiplas reservas simultâneas.")
+            print(f"O professor {user.name} recebeu {user.observador.notifications} notificações de múltiplas reservas simultâneas.")
         else:
             print("Usuário não encontrado.")
 

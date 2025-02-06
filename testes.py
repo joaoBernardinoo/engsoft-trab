@@ -13,6 +13,7 @@ def addCommand(command):
     interface_usuario.executar_comando(str_comando, parametros)
 
 def main():
+
     # addCommand("res 123 101")
     # addCommand("res 456 101")
     # addCommand("emp 456 101")
@@ -21,8 +22,8 @@ def main():
     # addCommand("res 456 101")
     # addCommand("emp 456 101")
 
-    addCommand("lus")
-    addCommand("llv")
+    # addCommand("lus")
+    # addCommand("llv")
 
     print("\nTestar Observação")
     addCommand("obs 100 100")
@@ -36,10 +37,6 @@ def main():
     addCommand("res 456 101")
     addCommand("res 789 101")
     addCommand("ntf 100")
-
-
-
-
 
     print("\nTestar Consulta Livros")
     addCommand("liv 100")

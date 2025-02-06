@@ -14,7 +14,6 @@ class User:
         self._name = name
         self._observador = Observador(self)
         self._emprestimo = self.get_emprestimo_strategy()
-        self._notifications = 0
         self._observed_books = []  # Lista de livros observados pelo usuário
         self._emprestimo_manager = EmprestimoManager()
         self._reserva_manager = ReservaManager()
